@@ -6,56 +6,92 @@ GANAR RONDA: puntos: 0, 15, 30, 40. Cada vez que un jugador se lleva puntos, aum
 entonces ganas la ronda, pero si ambos tienen 40, es empate.
 Si es empate el ganador de un punto ontendré ventaja y si gana el sgte punto, gana la ronda.
 Si el jugador con ventaja gana la pelota, gana la ronda., si el jugador en desventaja gana, es de nuevo empate.
-*/ 
+*/
 let players = [
-    {name:'Alberto Casero'},
-    {name:'David Jimenez'},
-    {name:'Javier de Miguel'}, 
-    {name:'Eduardo Aguilar'}
+    { name: 'Alberto Casero' },
+    { name: 'David Jimenez' },
+    { name: 'Javier de Miguel' },
+    { name: 'Eduardo Aguilar' }
 ];
 
-const puntos = [0, 15, 30,  40]
+const pointsStructure = [0, 15, 30, 40]
 
 let match = []; //partido con array vacio
 
 const randomPoint = () => Math.floor(Math.random() * 2) + 1;
 
 const pointWonBy = (playerName) => {
-    
+
     // TENEMOS QUE ACCEDER AL OBJETO DEL JUGADOR POR EL NOMBRE
     match = match.map((playerObject) => {
-        if (playerObject.name === playerName){
+        if (playerObject.name === playerName) {
             playerObject.pointsIndex += 1
             playerObject.points = puntos[playerObject.pointsIndex]
         }
         return playerObject
     })
-
     console.log(match);
 
     // TENEMOS QUE SUMAR UN PUNTO AL JUGADOR MODIFICANDO EL OBJETO
-        // SI EL JUGADOR TIENE 40 PUNTOS, GANA LA RONDA
-        // SIEMPRE QUE TENGA 2 PUNTOS MAS QUE EL OTRO JUGADOR
-        // SE SUMA UNA RONDA AL JUGADOR
-        // PUNTOS PARTIDO SE PONE A 0
+    // SI EL JUGADOR TIENE 40 PUNTOS, GANA LA RONDA
+    // SIEMPRE QUE TENGA 2 PUNTOS MAS QUE EL OTRO JUGADOR
+    // SE SUMA UNA RONDA AL JUGADOR
+    // PUNTOS PARTIDO SE PONE A 0
 
     // SI EL JUGADOR TIENE 4 RONDAS
-        // SI TIENE 2 RONDAS MAS QUE EL OTRO JUGADOR
-            // PUNTOS PARTIDO SE PONE A 0        
-            // SUMAMOS UN JUEGO AL JUGADOR
-            // LAS RONDAS SE PONEN A 0
-        // SI NO
-            // SUMAMOS UNA RONDA AL JUGADOR
-            // PUNTOS PARTIDO SE PONE A 0
-        
+    // SI TIENE 2 RONDAS MAS QUE EL OTRO JUGADOR
+    // PUNTOS PARTIDO SE PONE A 0        
+    // SUMAMOS UN JUEGO AL JUGADOR
+    // LAS RONDAS SE PONEN A 0
+    // SI NO
+    // SUMAMOS UNA RONDA AL JUGADOR
+    // PUNTOS PARTIDO SE PONE A 0
+
     // SI EL JUGADOR TIENE 2 JUEGOS
-        // GANA LA PARTIDA
-    
+    // GANA LA PARTIDA
+
     // console.log diciendo quien ha ganado el punto
 }
-const createMatch = (jugador1, jugador2) => { //creamos el partido
+const createMatch = (player1, player2) => { //creamos el partido
+    if (!player1 || !player2) throw new Error('Add player');
+    if (player1 === player2) throw new Error('Player are the same');
 
-    match = players
+    let match = {
+        rounds: 4,
+        maxRounds: 7,
+        game: [
+            { name: player1, score: 0 },
+            { name: player2, score: 0 },
+        ],
+        rounds: [0, 0],
+        sets: [0, 0],
+        deuce: false,
+        advantage: '',
+        winner: '',
+    }
+
+    const getPlayer = (playerNumber)  =>{
+        const playerPosition = playerNumber -1;
+        return match.game[playerPosition];
+    }
+
+    
+
+    const addPoints = (playerNumber) => {
+        const currentPlayer = getPlayer(playerNumber)
+        const playerPoints = currentPlayer.score;
+        if (playerPoints === 0) currentPlayer.score = 15;
+        else if (playerPoints === 15)   currentPlayer.score = 30;
+        else if (playerPoints === 30)   currentPlayer.score = 40;
+        else if (playerPoints === 40)   currentPlayer.score = 0;
+    }
+
+    const pointWonBy = (playerNumber) => {
+        addPoints(playerNumber)
+        const currentPlayer = getPlayer(playerNumber);
+        
+    }
+    /*match = players
         // [
         //     {name:'Alberto Casero'},
         //     {name:'David Jimenez'},
@@ -81,14 +117,16 @@ const createMatch = (jugador1, jugador2) => { //creamos el partido
 
     return  {
         pointWonBy,
-    }
+    }*/
 }
 
-const game = createMatch("Alberto Casero", "David Jimenez");
 
-game.pointWonBy("Alberto Casero");
-game.pointWonBy("Alberto Casero");
-game.pointWonBy("Alberto Casero");
+
+//const game = createMatch("Alberto Casero", "David Jimenez");
+
+//game.pointWonBy("Alberto Casero");
+//game.pointWonBy("Alberto Casero");
+//game.pointWonBy("Alberto Casero");
 
 
 
